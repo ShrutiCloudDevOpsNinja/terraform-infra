@@ -1,0 +1,9 @@
+name: workflow
+on: workflow_dispatch
+jobs:
+  powershellKicommandChalaniHai:
+    runs-on: meri_runner
+    steps: 
+    - run: echo hello world
+    - run: ls
+  

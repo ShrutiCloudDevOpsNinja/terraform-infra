@@ -1,0 +1,9 @@
+name: meri pipeline
+on: workflow_dispatch
+jobs: 
+  meri_workflow:
+    runs-on: 
+      self-hosted
+    steps: 
+      - run: echo hello narottam
+    
