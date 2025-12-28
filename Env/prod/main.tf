@@ -1,12 +1,12 @@
 module "resource_group" {
-  source                  = "../modules/azurerm_resource_group"
+  source                  = "../../modules/azurerm_resource_group"
   resource_group_name     = "rg-todoapp"
   resource_group_location = "centralindia"
 }
 
 module "virtual_network" {
   depends_on = [module.resource_group]
-  source     = "../modules/azurerm_virtual_network"
+  source     = "../../modules/azurerm_virtual_network"
 
   virtual_network_name     = "vnet-todoapp"
   virtual_network_location = "centralindia"
@@ -16,7 +16,7 @@ module "virtual_network" {
 
 module "frontend_subnet" {
   depends_on = [module.virtual_network]
-  source     = "../modules/azurerm_subnet"
+  source     = "../../modules/azurerm_subnet"
 
   resource_group_name  = "rg-todoapp"
   virtual_network_name = "vnet-todoapp"
@@ -26,7 +26,7 @@ module "frontend_subnet" {
 
 module "backend_subnet" {
   depends_on = [module.virtual_network]
-  source     = "../modules/azurerm_subnet"
+  source     = "../../modules/azurerm_subnet"
 
   resource_group_name  = "rg-todoapp"
   virtual_network_name = "vnet-todoapp"
@@ -36,7 +36,7 @@ module "backend_subnet" {
 
 module "public_ip_frontend" {
   depends_on          = [module.resource_group]
-  source              = "../modules/azurerm_public_ip"
+  source              = "../../modules/azurerm_public_ip"
   public_ip_name      = "pip-todoapp-frontend"
   resource_group_name = "rg-todoapp"
   location            = "centralindia"
@@ -45,7 +45,7 @@ module "public_ip_frontend" {
 
 module "frontend_vm" {
   depends_on = [module.frontend_subnet, module.key_vault, module.vm_username, module.vm_password, module.public_ip_frontend]
-  source     = "../modules/azurerm_virtual_machine"
+  source     = "../../modules/azurerm_virtual_machine"
 
   resource_group_name  = "rg-todoapp"
   location             = "centralindia"
@@ -66,7 +66,7 @@ module "frontend_vm" {
 }
 
 # module "public_ip_backend" {
-#   source              = "../modules/azurerm_public_ip"
+#   source              = "../../modules/azurerm_public_ip"
 #   public_ip_name      = "pip-todoapp-backend"
 #   resource_group_name = "rg-todoapp"
 #   location            = "centralindia"
@@ -75,7 +75,7 @@ module "frontend_vm" {
 
 # module "backend_vm" {
 #   depends_on = [module.backend_subnet]
-#   source     = "../modules/azurerm_virtual_machine"
+#   source     = "../../modules/azurerm_virtual_machine"
 
 #   resource_group_name  = "rg-todoapp"
 #   location             = "centralindia"
@@ -94,7 +94,7 @@ module "frontend_vm" {
 # }
 
 # module "sql_server" {
-#   source              = "../modules/azurerm_sql_server"
+#   source              = "../../modules/azurerm_sql_server"
 #   sql_server_name     = "todosqlserver008"
 #   resource_group_name = "rg-todoapp"
 #   location            = "centralindia"
@@ -105,21 +105,21 @@ module "frontend_vm" {
 
 # module "sql_database" {
 #   depends_on          = [module.sql_server]
-#   source              = "../modules/azurerm_sql_database"
+#   source              = "../../modules/azurerm_sql_database"
 #   sql_server_name     = "todosqlserver008"
 #   resource_group_name = "rg-todoapp"
 #   sql_database_name   = "tododb"
 # }
 
 module "key_vault" {
-  source              = "../modules/azurerm_key_vault"
+  source              = "../../modules/azurerm_key_vault"
   key_vault_name      = "sonamkitijori"
   location            = "centralindia"
   resource_group_name = "rg-todoapp"
 }
 
 module "vm_password" {
-  source              = "../modules/azurerm_key_vault_secret"
+  source              = "../../modules/azurerm_key_vault_secret"
   depends_on          = [module.key_vault]
   key_vault_name      = "sonamkitijori"
   resource_group_name = "rg-todoapp"
@@ -128,7 +128,7 @@ module "vm_password" {
 }
 
 module "vm_username" {
-  source              = "../modules/azurerm_key_vault_secret"
+  source              = "../../modules/azurerm_key_vault_secret"
   depends_on          = [module.key_vault]
   key_vault_name      = "sonamkitijori"
   resource_group_name = "rg-todoapp"
